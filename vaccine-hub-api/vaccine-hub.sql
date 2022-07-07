@@ -5,4 +5,5 @@ DROP DATABASE vaccine_hub
 CREATE DATABASE vaccine_hub 
 \connect vaccine_hub
 
-\i vaccine-hub-schema.sql
+\i vaccine-hub-schema.sql 
+--\i means run even more sql from otro sql file

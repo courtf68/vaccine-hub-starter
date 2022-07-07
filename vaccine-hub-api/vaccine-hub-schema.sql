@@ -7,4 +7,5 @@ CREATE TABLE users (
     location   TEXT NOT NULL,
     date       TEXT NOT NULL
 -- sql not rlly working
+--blueprint
 );

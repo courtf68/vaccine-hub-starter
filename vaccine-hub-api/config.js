@@ -11,10 +11,20 @@ function getDatabaseUri() {
   const dbHost = process.env.DATABASE_HOST || "localhost";
   const dbPort = process.env.DATABASE_PORT || 5432;
   const dbName = process.env.DATABASE_NAME || "vaccine_hub";
+  //if db vari
+  return (
+    process.env.DATABASE_URL ||
+    `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
+  );
 }
-
-console.log("process.env".yellow, Object.keys(proccess.env));
+//stopped @ 5 min, step 4
+console.log("process.env".yellow, Object.keys(process.env));
 console.log("App Config".red);
 console.log("PORT:".blue, PORT);
 console.log("Database URI:".blue, getDatabaseUri());
 console.log("---");
+
+module.exports = {
+  PORT,
+  getDatabaseUri,
+};
