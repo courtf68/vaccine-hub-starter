@@ -44,7 +44,14 @@ class User {
     throw new UnauthorizedError("wrong user/password");
   }
   static async register(creds) {
-    const reqFields = ["email", "password"];
+    const reqFields = [
+      "password",
+      "email",
+      "first_name",
+      "last_name",
+      "location",
+      "date",
+    ];
     reqFields.forEach((field) => {
       if (!creds.hasOwnProperty(field)) {
         throw new BadRequestError(`missing ${field} in req body`);
@@ -66,12 +73,19 @@ class User {
 
     const lowercaseE = creds.email.toLowerCase();
     const result = await db.query(
-      `insert into users ( 
-        email, password 
-    ) values ($1,$2) 
-    returning id, password, first_name, last_name, email, location, date;
+      `INSERT INTO users ( 
+        email, password, first_name, last_name, location, date
+    ) VALUES ($1,$2,$3,$4,$5,$6) 
+    RETURNING id, password, first_name, last_name, email, location, date;
     `,
-      [lowercaseE, hashedPw]
+      [
+        lowercaseE,
+        hashedPw,
+        creds.first_name,
+        creds.last_name,
+        creds.location,
+        creds.date,
+      ]
     );
 
     //ret user
@@ -84,7 +98,7 @@ class User {
     if (!email) {
       throw new BadRequestError("no email here");
     }
-    const query = `select * from users where email = $1`;
+    const query = `SELECT * FROM USERS WHERE email = $1`;
     const result = await db.query(query, [email.toLowerCase()]);
     const user = result.rows[0];
     return user;

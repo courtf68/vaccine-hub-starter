@@ -7,11 +7,17 @@ const { BadRequestError, NotFoundError } = require("./utils/errors");
 
 const app = express();
 
-app.use(cors); //cross origin resource
+app.use(cors()); //cross origin resource
 
 app.use(express.json()); //parse w json
 
 app.use(morg("tiny")); //req info
+
+app.get("/", (req, res) => {
+  //middleware func
+  // res.status(200).json({ hi: "hjk" });
+  res.send({ ping: "pong" });
+});
 
 app.use("/auth", AuthRoutes);
 app.use((req, res, next) => {
@@ -24,7 +30,7 @@ app.use((err, req, res, next) => {
   const stat = err.stat || 500; //500 if not handled correctly
   const mess = err.mess;
 
-  return res.stat(stat).json({
+  return res.status(stat).json({
     error: { mess: stat }, //may need to change names
   });
 });
